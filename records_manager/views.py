@@ -15,7 +15,7 @@ def home(request):
         for kid in all_kid:
             print(kid.parent_email)
         current_user = request.user
-        return render(request, 'pages/home.html', {'all_kid': all_kid})
+        return render(request, 'pages/home.html', {'all_kid': all_kid, 'current_user_name': current_user.first_name+' '+current_user.last_name})
 
     return render(request, 'pages/home.html')
 
@@ -30,11 +30,16 @@ def add_child(request):
         kid_age = request.POST['kid_age']
         parent_phone = request.POST['parent_phone']
         parent_email = request.POST['parent_email']
-        print(user_id, kid_name, kid_age, parent_phone, parent_email)
-        child_info = child(user_id=request.user, name=kid_name, age=kid_age,
-                           parent_contact_number=parent_phone, parent_email=parent_email)
-        child_info.save()
-        return render(request, 'pages/add_child.html')
+        if user_id and kid_name and kid_age and parent_phone and parent_email:
+            print(user_id, kid_name, kid_age, parent_phone, parent_email)
+            child_info = child(user_id=request.user, name=kid_name, age=kid_age,
+                               parent_contact_number=parent_phone, parent_email=parent_email)
+            child_info.save()
+            messages.success(request, 'Child added successfully')
+            return redirect('home')
+        else:
+            messages.error(request, 'Please fill all the fields')
+            return render(request, 'pages/add_child.html')
 
 
 def signup(request):
