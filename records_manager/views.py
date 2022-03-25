@@ -15,7 +15,7 @@ def home(request):
         for kid in all_kid:
             print(kid.parent_email)
         current_user = request.user
-        return render(request, 'pages/home.html', {'current_user_name': current_user.first_name+' '+current_user.last_name})
+        return render(request, 'pages/home.html', {'all_kid': all_kid})
 
     return render(request, 'pages/home.html')
 

@@ -46,12 +46,44 @@
         </div>
     </div>
 </div>
+
+{% endfor %}
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var myModal = new bootstrap.Modal(document.getElementById('errorModal'))
         myModal.show()
     }, false);
 </script>
-{% endfor %}
 {% endif %}
+<div class="container"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">kid name</th>
+            <th scope="col">kid age</th>
+            <th scope="col">parent contact number</th>
+            <th scope="col">parent email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for kid in all_kid %}
+        <tr>
+            <th> {{ kid.id }} </th>
+            <td> {{ kid.name }} </td>
+
+            <td> {{ kid.age }} </td>
+            <td> {{kid.parent_contact_number}} </td>
+            <td> {{kid.parent_email}} </td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+</div>
+
+
+
+
+
 {% endblock %}
