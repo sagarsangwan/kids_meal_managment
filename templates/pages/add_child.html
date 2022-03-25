@@ -1,0 +1,34 @@
+{% extends "main.html" %}
+{% block content %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row container-style mg-top">
+            <div class="form-group col-xs-12 col-md-6 pb-3">
+                <label for="inputEmail4">Kid name</label>
+                <input type="text" class="form-control" name="kid_name" required value="{{kid_name}}" id="inputEmail4"
+                    placeholder="kid name">
+            </div>
+            <div class="form-group col-xs-12 col-md-6 pb-3">
+                <label for="inputEmail4">Kid age</label>
+                <input type="text" class="form-control" name="kid_age" required value="{{kid_age}}" id="inputEmail4"
+                    placeholder="Kid age">
+            </div>
+            <div class="form-group col-xs-12 col-md-6 pb-3">
+                <label for="inputEmail4">Parent contact number</label>
+                <input type="text" class="form-control" required name="parent_phone" value="{{parent_phone}}"
+                    id="inputEmail4" placeholder="Parent conact number">
+            </div>
+            <div class="form-group col-xs-12 col-md-6 pb-3">
+                <label for="inputPassword4">Parent email</label>
+                <input type="email" class="form-control" required name="parent_email" id="inputPassword4"
+                    placeholder="Parent email">
+            </div>
+
+            <div class="form-group col-xs-12 col-md-6 pb-3">
+                <button type="submit" class="btn button btn-dark">Add child</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
