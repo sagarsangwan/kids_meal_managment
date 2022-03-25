@@ -47,7 +47,30 @@ def add_child(request):
 def kid_info(request, id):
     if request.method == 'GET':
         kid_info = child.objects.get(id=id)
-        return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number})
+        meal_info = kid_meal.objects.filter(kid_id=id)
+
+        return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number, 'meal_info': meal_info})
+
+
+@login_required
+def add_meal(request, id):
+    kid = child.objects.get(id=id)
+    img_url = request.POST['img_url']
+    group = request.POST['group']
+
+    if img_url and group:
+        if group == 'Unknown':
+            is_approved = True
+        else:
+            is_approved = False
+        meal_info = kid_meal(kid_id=kid, image_url=img_url, food_group=group,
+                             approved_by=request.user, is_approved=is_approved)
+        meal_info.save()
+        messages.success(request, 'Meal added successfully')
+        return redirect('kid_info', id=id)
+    else:
+        messages.error(request, 'Please fill all the fields')
+        return redirect('kid_info', id=id)
 
 
 @login_required

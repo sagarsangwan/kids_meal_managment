@@ -21,9 +21,28 @@
                 </a>
             </div>
             <div class="col-6 text-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-kid">
                     Edit kid info
-                </button> <a class="btn btn-primary" href="/logoutuser">Logout</a>
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-meal">
+                    Add New Meal
+                </button>
+                <a class="btn btn-primary" href="/logoutuser">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+
+    <div class="row">
+        <!-- {%%} -->
+        <div class="card col-xs-12 col-md-6">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
             </div>
         </div>
     </div>
@@ -33,7 +52,98 @@
 
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal for adding new meal-->
+<div class="modal fade" id="add-new-meal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new meal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/add-meal/{{ kid_id }}" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Image Url</label>
+                        <div class="col-sm-10">
+                            <input type="text" required class="form-control" name="img_url" id="inputPassword3">
+                        </div>
+                    </div>
+                    <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-2 pt-0">Group</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="group" id="group1" value="Veg"
+                                    checked>
+                                <label class="form-check-label" for="group1">
+                                    Veg
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="group" id="group2" value="Fruit">
+                                <label class="form-check-label" for="group2">
+                                    Fruit
+                                </label>
+                            </div>
+                            <div class="form-check disabled">
+                                <input class="form-check-input" type="radio" name="group" id="group3" value="Grain">
+                                <label class="form-check-label" for="group3">
+                                    Grain
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="group" id="group2" value="Protien">
+                                <label class="form-check-label" for="group2">
+                                    Protien
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="group" id="group2" value="Dairy">
+                                <label class="form-check-label" for="group2">
+                                    Dairy
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="group" id="group2"
+                                    value="Confectionery">
+                                <label class="form-check-label" for="group2">
+                                    Confectionery
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="group" id="group2" value="Unknown">
+                                <label class="form-check-label" for="group2">
+                                    Unknown
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn button btn-primary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn button btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal for edit kid info -->
+<div class="modal fade" id="edit-kid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
