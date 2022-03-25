@@ -1,32 +1,41 @@
 {% extends "main.html" %}
 {% block content %}
-<div class="container">
-    <div class="row mg-top">
-        <div class="col">
-            <h1>login</h1>
+<style>
+    @media only screen and (max-width: 768px) {
+        .container {
+            width: auto !important;
+
+        }
+
+        .padding-row {
+            padding: 24px !important;
+        }
+    }
+</style>
+<div class="container top-margin border-radius-1 bg-grey mx-auto" style="width: 600px">
+    <form method="post" class="row padding-row p-5">
+        {% csrf_token %}
+        <div class="col-12">
+            <h2 class="mb-4">LogIn</h1>
         </div>
-    </div>
-    <div class="row container-style mg-top">
-        <form method="POST">
-
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="text" name="username" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input name="password" type="password" class="form-control" id="exampleInputPassword1">
-            </div>
-            <button type="submit" class="btn a btn-dark">Submit</button>
-
-
-        </form>
-    </div>
+        <div class="col-12 pb-3">
+            User Name :
+            <input type="text" name="username" class="form-control" aria-describedby="emailHelp">
+        </div>
+        <div class="col-12 pb-3">
+            Password :
+            <input type="password" name="password" class="form-control">
+        </div>
+        <div class="col-12 pb-3">
+            <button type="submit" class="btn btn-dark">Login</button>
+            <span class="px-2">or</span>
+            <a href="/signup" class="btn btn-dark">Signup</a>
+        </div>
+        <div class="col-12">
+            <i>{{info}}</i>
+        </div>
+    </form>
 </div>
-
 
 {% if messages %}
 {% for message in messages %}

@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
-
+@login_required
 def home(request):
-
+    if request.method == 'GET':
+        return render(request, 'pages/home.html')
     return render(request, 'pages/home.html')
 
 
@@ -24,6 +27,11 @@ def signup(request):
 
 
 def loginuser(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return render(request, 'pages/login.html')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
