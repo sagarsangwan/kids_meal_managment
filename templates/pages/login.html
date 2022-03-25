@@ -21,9 +21,30 @@
                 <input name="password" type="password" class="form-control" id="exampleInputPassword1">
             </div>
             <button type="submit" class="btn a btn-dark">Submit</button>
-            <i>{{ error }}</i>
+
 
         </form>
     </div>
 </div>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="alert alert-danger">
+                {{message}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('errorModal'))
+        myModal.show()
+    }, false);
+</script>
+{% endfor %}
+{% endif %}
 {% endblock %}
