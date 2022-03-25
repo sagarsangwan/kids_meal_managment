@@ -23,7 +23,7 @@ def home(request):
 def add_child(request):
     if request.method == 'GET':
 
-        return render(request, 'pages/add_child.html')
+        return render(request, 'pages/add_child.html', {'kid_name': '', 'kid_age': '', 'parent_email': '', 'parent_phone': ''})
     elif request.method == "POST":
         user_id = request.user.id
         kid_name = request.POST['kid_name']
@@ -39,7 +39,7 @@ def add_child(request):
             return redirect('home')
         else:
             messages.error(request, 'Please fill all the fields')
-            return render(request, 'pages/add_child.html')
+            return render(request, 'pages/add_child.html', {'kid_name': kid_name, 'kid_age': kid_age, 'parent_phone': parent_phone, 'parent_email': parent_email})
 
 
 def signup(request):
