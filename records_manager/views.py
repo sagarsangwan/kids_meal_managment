@@ -20,6 +20,7 @@ def home(request):
     return render(request, 'pages/home.html')
 
 
+@login_required
 def add_child(request):
     if request.method == 'GET':
 
@@ -42,12 +43,14 @@ def add_child(request):
             return render(request, 'pages/add_child.html', {'kid_name': kid_name, 'kid_age': kid_age, 'parent_phone': parent_phone, 'parent_email': parent_email})
 
 
+@login_required
 def kid_info(request, id):
     if request.method == 'GET':
         kid_info = child.objects.get(id=id)
         return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number})
 
 
+@login_required
 def edit_kid_info(request, id):
     kid_info = child.objects.get(id=id)
     kid_info.name = request.POST['kid_name']
@@ -59,6 +62,7 @@ def edit_kid_info(request, id):
     return redirect('kid_info', id=id)
 
 
+@login_required
 def delete_kid(request, id):
     if request.method == 'GET':
         child_info = child.objects.get(id=id)
