@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
+from .models import *
 from django.contrib.auth.decorators import login_required
 
 
@@ -10,6 +11,9 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def home(request):
     if request.method == 'GET':
+        all_kid = child.objects.filter(user_id=request.user)
+        for kid in all_kid:
+            print(kid.parent_email)
         current_user = request.user
         return render(request, 'pages/home.html', {'current_user_name': current_user.first_name+' '+current_user.last_name})
 
@@ -18,6 +22,18 @@ def home(request):
 
 def add_child(request):
     if request.method == 'GET':
+
+        return render(request, 'pages/add_child.html')
+    elif request.method == "POST":
+        user_id = request.user.id
+        kid_name = request.POST['kid_name']
+        kid_age = request.POST['kid_age']
+        parent_phone = request.POST['parent_phone']
+        parent_email = request.POST['parent_email']
+        print(user_id, kid_name, kid_age, parent_phone, parent_email)
+        child_info = child(user_id=request.user, name=kid_name, age=kid_age,
+                           parent_contact_number=parent_phone, parent_email=parent_email)
+        child_info.save()
         return render(request, 'pages/add_child.html')
 
 

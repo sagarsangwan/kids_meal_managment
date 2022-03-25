@@ -10,5 +10,8 @@ class child(models.Model):
     parent_contact_number = models.IntegerField()
     parent_email = models.EmailField()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = "child"

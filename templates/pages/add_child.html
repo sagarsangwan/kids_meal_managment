@@ -1,5 +1,26 @@
 {% extends "main.html" %}
 {% block content %}
+<div class="bg-dark">
+    <div class="container">
+        <div class="row py-2">
+            <div class="col-6">
+                <a href="/">
+                    <h2 class="text-white mb-0">Records Manager</h1>
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn btn-primary" href="/logoutuser">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-4">
+            <h2 class="">Add Student</h1>
+        </div>
+    </div>
+</div>
 <div class="container">
     <form method="post">
         {% csrf_token %}
