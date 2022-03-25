@@ -26,6 +26,11 @@ def signup(request):
     return render(request, 'pages/signup.html')
 
 
+def logoutuser(request):
+    logout(request)
+    return redirect('home')
+
+
 def loginuser(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
