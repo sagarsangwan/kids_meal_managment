@@ -42,6 +42,14 @@ def add_child(request):
             return render(request, 'pages/add_child.html', {'kid_name': kid_name, 'kid_age': kid_age, 'parent_phone': parent_phone, 'parent_email': parent_email})
 
 
+def delete_kid(request, id):
+    if request.method == 'GET':
+        child_info = child.objects.get(id=id)
+        child_info.delete()
+        messages.success(request, 'Child deleted successfully')
+        return redirect('home')
+
+
 def signup(request):
     print(request)
     if request.method == 'POST':

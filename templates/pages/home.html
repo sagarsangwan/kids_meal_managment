@@ -75,6 +75,9 @@
             <td> {{ kid.age }} </td>
             <td> {{kid.parent_contact_number}} </td>
             <td> {{kid.parent_email}} </td>
+            <td> <a class="btn btn-primary" href="delete-kid/{{ kid.id }}"> delete </a> </td>
+            <td> <a class="btn btn-primary" href="/delete-kid"> Edit </a> </td>
+            <td> <a class="btn btn-primary" href="#"> Info </a> </td>
             {% endfor %}
         </tr>
     </tbody>
