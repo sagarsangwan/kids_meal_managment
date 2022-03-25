@@ -42,6 +42,12 @@ def add_child(request):
             return render(request, 'pages/add_child.html', {'kid_name': kid_name, 'kid_age': kid_age, 'parent_phone': parent_phone, 'parent_email': parent_email})
 
 
+def edit_kid(request, id):
+    if request.method == 'GET':
+        kid_info = child.objects.get(id=id)
+        return render(request, 'pages/edit_kid.html', {'kid_info': kid_info})
+
+
 def delete_kid(request, id):
     if request.method == 'GET':
         child_info = child.objects.get(id=id)
