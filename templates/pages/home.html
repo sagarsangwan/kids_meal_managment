@@ -1,3 +1,91 @@
-<h1>
-    hi
-</h1>
+{% extends "main.html" %}
+{% block content %}
+<style>
+    @media only screen and (max-width: 768px) {
+        .header-button {
+            margin-bottom: 12px;
+        }
+
+        .header-button {
+            margin-bottom: 12px;
+        }
+    }
+</style>
+
+<div class="bg-dark">
+    <div class="container">
+        <div class="row py-2">
+            <div class="col-6">
+                <a href="/">
+                    <h2 class="text-white mb-0">Records Manager</h1>
+                </a>
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn header-button btn-primary" href="/add-child">Add kid</a>
+                <a class="btn btn-primary" href="/logoutuser">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-4">
+
+            <h2 class="">Welcome {{ current_user_name }}</h1>
+        </div>
+    </div>
+</div>
+{% if messages %}
+{% for message in messages %}
+<div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+                {{message}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('errorModal'))
+        myModal.show()
+    }, false);
+</script>
+{% endif %}
+<div class="container"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">kid name</th>
+            <th scope="col">kid age</th>
+            <th scope="col">parent contact number</th>
+            <th scope="col">parent email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for kid in all_kid %}
+        <tr>
+            <th> {{ kid.id }} </th>
+            <td> {{ kid.name }} </td>
+            <td> {{ kid.age }} </td>
+            <td> {{kid.parent_contact_number}} </td>
+            <td> {{kid.parent_email}} </td>
+            <td> <a class="btn btn-primary" href="delete-kid/{{ kid.id }}"> delete </a> </td>
+            <td> <a class="btn btn-primary" href="/delete-kid"> Edit </a> </td>
+            <td> <a class="btn btn-primary" href="#"> Info </a> </td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+</div>
+
+
+
+
+
+{% endblock %}
