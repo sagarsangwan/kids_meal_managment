@@ -12,7 +12,13 @@ def home(request):
     if request.method == 'GET':
         current_user = request.user
         return render(request, 'pages/home.html', {'current_user_name': current_user.first_name+' '+current_user.last_name})
+
     return render(request, 'pages/home.html')
+
+
+def add_child(request):
+    if request.method == 'GET':
+        return render(request, 'pages/add_child.html')
 
 
 def signup(request):
