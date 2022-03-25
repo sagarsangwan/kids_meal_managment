@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def home(request):
     if request.method == 'GET':
-        return render(request, 'pages/home.html')
+        current_user = request.user
+        return render(request, 'pages/home.html', {'current_user_name': current_user.first_name+' '+current_user.last_name})
     return render(request, 'pages/home.html')
 
 
@@ -23,15 +24,26 @@ def signup(request):
         last_name = request.POST['last_name']
         user_password = request.POST['user_password']
         confirm_password = request.POST['confirm_password']
+
         print(user_name, user_email, user_password,
               confirm_password, first_name, last_name)
         if user_password == confirm_password:
             if User.objects.filter(username=user_name).exists():
                 messages.info(request, 'Username already taken')
-                return redirect('signup')
+                return render(request, 'pages/signup.html', {
+                    'user_name': user_name,
+                    'user_email': user_email,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                })
             elif User.objects.filter(email=user_email).exists():
                 messages.info(request, 'Email already taken')
-                return redirect('signup')
+                return render(request, 'pages/signup.html', {
+                    'user_name': user_name,
+                    'user_email': user_email,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                })
             else:
                 user = User.objects.create_user(
                     username=user_name, password=user_password, email=user_email, first_name=first_name, last_name=last_name)
@@ -40,9 +52,25 @@ def signup(request):
                 return redirect('login')
         else:
             messages.info(request, 'Password not matching')
-            return redirect('signup')
-
-    return render(request, 'pages/signup.html')
+            return render(request, 'pages/signup.html', {
+                'user_name': user_name,
+                'user_email': user_email,
+                'first_name': first_name,
+                'last_name': last_name,
+            })
+    else:
+        user_info = {
+            'user_name': '',
+            'user_email': '',
+            'first_name': '',
+            'last_name': '',
+        }
+        return render(request, 'pages/signup.html', {
+            'user_name': '',
+            'user_email': '',
+            'first_name': '',
+            'last_name': '',
+        })
 
 
 def logoutuser(request):
