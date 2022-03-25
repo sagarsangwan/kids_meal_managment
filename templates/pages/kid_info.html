@@ -22,7 +22,7 @@
             </div>
             <div class="col-6 text-end">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Edit
+                    Edit kid info
                 </button> <a class="btn btn-primary" href="/logoutuser">Logout</a>
             </div>
         </div>
@@ -33,7 +33,6 @@
 
 
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -42,7 +41,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form action="/edit-kid-info/{{ kid_id }}" method="post">
                     {% csrf_token %}
                     <div class="form-row container-style mg-top">
                         <div class="form-group col-12 pb-3">
@@ -62,12 +61,12 @@
                         </div>
                         <div class="form-group col-12    pb-3">
                             <label for="inputPassword4">Parent email</label>
-                            <input type="email" class="form-control" required name="parent_email" id="inputPassword4"
-                                placeholder="Parent email">
+                            <input type="email" class="form-control" required value="{{ parent_email }}"
+                                name="parent_email" id="inputPassword4" placeholder="Parent email">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn button btn-primary">Add child</button>
+                        <button type="submit" class="btn button btn-primary">save changes</button>
                         <button type="button" class="btn btn-primary button" data-bs-dismiss="modal">Close</button>
                     </div>
             </div>
@@ -75,4 +74,29 @@
         </div>
     </div>
 </div>
+
+
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+                {{message}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('errorModal'))
+        myModal.show()
+    }, false);
+</script>
+{% endif %}
 {% endblock %}

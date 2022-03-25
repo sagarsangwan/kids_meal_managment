@@ -42,10 +42,21 @@ def add_child(request):
             return render(request, 'pages/add_child.html', {'kid_name': kid_name, 'kid_age': kid_age, 'parent_phone': parent_phone, 'parent_email': parent_email})
 
 
-def edit_kid(request, id):
+def kid_info(request, id):
     if request.method == 'GET':
         kid_info = child.objects.get(id=id)
-        return render(request, 'pages/edit_kid.html', {'kid_info': kid_info})
+        return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number})
+
+
+def edit_kid_info(request, id):
+    kid_info = child.objects.get(id=id)
+    kid_info.name = request.POST['kid_name']
+    kid_info.age = request.POST['kid_age']
+    kid_info.parent_email = request.POST['parent_email']
+    kid_info.parent_contact_number = request.POST['parent_phone']
+    kid_info.save()
+    messages.success(request, 'Child updated successfully')
+    return redirect('kid_info', id=id)
 
 
 def delete_kid(request, id):
