@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AdminConfig(AppConfig):
+class RecordsManagerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'admin'
+    name = 'records_manager'
