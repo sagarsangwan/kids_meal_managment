@@ -18,7 +18,7 @@ def signup(request):
     print(request)
     if request.method == 'POST':
         user_name = request.POST['user_name']
-        user_email = request.POST['user_mail']
+        user_email = request.POST['user_email']
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         user_password = request.POST['user_password']
@@ -38,12 +38,16 @@ def signup(request):
                 user.save()
                 messages.info(request, 'User created')
                 return redirect('login')
+        else:
+            messages.info(request, 'Password not matching')
+            return redirect('signup')
 
     return render(request, 'pages/signup.html')
 
 
 def logoutuser(request):
     logout(request)
+    messages.success(request, 'Logged out Successfully')
     return redirect('home')
 
 

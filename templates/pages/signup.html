@@ -36,4 +36,26 @@
         </div>
     </form>
 </div>
+
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+                {{message}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('errorModal'))
+        myModal.show()
+    }, false);
+</script>
+{% endfor %}
+{% endif %}
 {% endblock %}
