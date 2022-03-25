@@ -35,16 +35,30 @@
 
 
 <div class="container">
-
     <div class="row">
-        <!-- {%%} -->
-        <div class="card col-xs-12 col-md-6">
-            <img src="..." class="card-img-top" alt="...">
+        {% if meal_info %}
+        {% for meal in meal_info %}
+        <div class="card col-xs-12 col-md-4 ">
+            <img src="{{ meal.image_url }}" class="card-img-top" alt="...">
             <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
+                <ul class="list-group list-group-flush">
+                    <li> created_on : <p class="card-text">{{ meal.created_on }}</p>
+                    </li>
+                    <li>updated_on : <p class="card-text">{{ meal.updated_on }}</p>
+                    </li>
+                    <li> approved_by :<p class="card-text">{{ meal.approved_by }}</p>
+                    </li>
+                    <li>is_approved :<p class="card-text">{{ meal.is_approved }}</p>
+                    </li>
+                    <li>image_url :<p class="card-text"><a href="{{ meal.image_url }}" target="blank">img_url</a> </p>
+                    </li>
+                    <li>food_group :<p class="card-text">{{ meal.food_group }}</p>
+                    </li>
+                </ul>
             </div>
         </div>
+        {% endfor %}
+        {% endif %}
     </div>
 </div>
 

@@ -30,7 +30,7 @@ class kid_meal(models.Model):
         db_table = "kid_meal"
 
     def __str__(self):
-        return self.meal_id
+        return "meal for {} | {} ".format(self.kid_id.name, self.food_group)
 
     class Meta:
         db_table = "kid_meal"
