@@ -8,11 +8,11 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
-
+# home page for displaying all the records of current user
 @login_required
 def home(request):
     if request.method == 'GET':
+        # getting all kid records of current user and displaying them on home page
         all_kid = child.objects.filter(user_id=request.user)
         for kid in all_kid:
             print(kid.parent_email)
@@ -22,22 +22,29 @@ def home(request):
     return render(request, 'pages/home.html')
 
 
+# add kid page for adding new kid to the database of current user
+
 @login_required
-def add_child(request):
+def add_kid(request):
     user_id = request.user.id
     kid_name = request.POST['kid_name']
     kid_age = request.POST['kid_age']
     parent_phone = request.POST['parent_phone']
     parent_email = request.POST['parent_email']
+    # checking if user entered all the fields or not
     if user_id and kid_name and kid_age and parent_phone and parent_email:
         child_info = child(user_id=request.user, name=kid_name, age=kid_age,
                            parent_contact_number=parent_phone, parent_email=parent_email)
+        # saving the data to the database
         child_info.save()
+        # displaying success message to the user and redirecting to home page
         messages.success(request, 'Child added successfully')
         return redirect('home')
     else:
         messages.error(request, 'Please fill all the fields')
         return redirect('home')
+
+# edit meal page for editing the meal of the current kid
 
 
 @login_required
@@ -47,12 +54,12 @@ def edit_meal_info(request, id):
         return render(request, 'pages/edit_meal_info.html', {'meal_info': meal_info})
     if request.method == 'POST':
         kid = meal_info.kid_id.id
-
         img_url = request.POST['img_url']
         food_group = request.POST['food_group']
-
         if img_url and food_group:
+            # checking if food group is defined or not
             is_approved = food_group != 'Unknown'
+            # updating the meal info in the database
             kid_meal.objects.filter(id=id).update(
                 image_url=img_url, food_group=food_group, updated_on=datetime.datetime.now(), is_approved=is_approved)
             messages.success(request, 'Meal info updated successfully')
@@ -60,6 +67,8 @@ def edit_meal_info(request, id):
         else:
             messages.error(request, 'Please fill all the fields')
             return redirect('edit_meal_info', id=id)
+
+# kid info page for displaying the details of the current kid
 
 
 @login_required
@@ -69,6 +78,8 @@ def kid_info(request, id):
         meal_info = kid_meal.objects.filter(kid_id=id)
 
         return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number, 'meal_info': meal_info, 'current_user_name': request.user.first_name+' '+request.user.last_name})
+
+# page for add meal info of the current kid
 
 
 @login_required
@@ -88,16 +99,17 @@ def add_meal(request, id):
         messages.error(request, 'Please fill all the fields')
         return redirect('kid_info', id=id)
 
+# route handler for deleting the meal of the current kid
+
 
 @login_required
 def delete_meal(request, id):
-    if request.method == 'GET':
-        kid_id = kid_meal.objects.get(id=id).kid_id.id
+    kid_id = kid_meal.objects.get(id=id).kid_id.id
+    kid_meal.objects.get(id=id).delete()
+    messages.success(request, 'Meal deleted successfully')
+    return redirect('kid_info', id=kid_id)
 
-        kid_meal.objects.get(id=id).delete()
-
-        messages.success(request, 'Meal deleted successfully')
-        return redirect('kid_info', id=kid_id)
+# route handler for editing the details of the current kid
 
 
 @login_required
@@ -107,9 +119,15 @@ def edit_kid_info(request, id):
     kid_info.age = request.POST['kid_age']
     kid_info.parent_email = request.POST['parent_email']
     kid_info.parent_contact_number = request.POST['parent_phone']
-    kid_info.save()
-    messages.success(request, 'Child updated successfully')
-    return redirect('kid_info', id=id)
+    if kid_info.name and kid_info.age and kid_info.parent_email and kid_info.parent_contact_number:
+        kid_info.save()
+        messages.success(request, 'Child updated successfully')
+        return redirect('kid_info', id=id)
+    else:
+        messages.error(request, 'Please fill all the fields')
+        return redirect('kid_info', id=id)
+
+# route handler for deleting the current kid
 
 
 @login_required
@@ -119,6 +137,8 @@ def delete_kid(request, id):
         child_info.delete()
         messages.success(request, 'Child deleted successfully')
         return redirect('home')
+
+# route handler registration page for registering new user
 
 
 def signup(request):
@@ -173,14 +193,19 @@ def signup(request):
         })
 
 
+# route handler for logout of the current user
+
 def logoutuser(request):
     logout(request)
     messages.success(request, 'Logged out Successfully')
     return redirect('home')
 
+# route handler for login page for logging in the user
+
 
 def loginuser(request):
     if request.method == 'GET':
+        # checking if the user is already logged in or not and redirecting to home page if he is already logged in
         if request.user.is_authenticated:
             return redirect('home')
         else:

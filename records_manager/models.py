@@ -1,8 +1,7 @@
 from django.db import models
 
-# Create your models here.
 
-
+# model for child table in the database to store the information of the kid of the current user
 class child(models.Model):
     user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -17,6 +16,7 @@ class child(models.Model):
         db_table = "child"
 
 
+#  model for meal table in the database to store the information of the meal of the current kid
 class kid_meal(models.Model):
     kid_id = models.ForeignKey('child', on_delete=models.CASCADE)
     image_url = models.CharField(max_length=200)
@@ -31,6 +31,3 @@ class kid_meal(models.Model):
 
     def __str__(self):
         return "meal for {} | {} ".format(self.kid_id.name, self.food_group)
-
-    class Meta:
-        db_table = "kid_meal"
