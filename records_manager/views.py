@@ -40,8 +40,10 @@ def add_child(request):
 
 
 @login_required
-def edit_meal_info():
-    pass
+def edit_meal_info(request, id):
+    if request.method == 'GET':
+        meal_info = kid_meal.objects.get(id=id)
+        return render(request, 'pages/edit_meal_info.html', {'meal_info': meal_info})
 
 
 @login_required
