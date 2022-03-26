@@ -1,6 +1,12 @@
 {% extends "main.html" %}
 {% block content %}
 <style>
+    .card-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
     @media only screen and (max-width: 768px) {
         .header-button {
             margin-bottom: 12px;
@@ -20,44 +26,73 @@
                     <h2 class="text-white mb-0">Records Manager</h1>
                 </a>
             </div>
-            <div class="col-6 text-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-kid">
-                    Edit kid info
-                </button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-meal">
-                    Add New Meal
-                </button>
-                <a class="btn btn-primary" href="/logoutuser">Logout</a>
+            <div class="col-6 text-end mt-1">
+                <div class="text-secondary">Welcome <b class="text-white">{{ current_user_name }}</b> <a
+                        class="btn btn-secondary ms-4 btn-sm" href="/logoutuser">Logout</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<div class="container">
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <h2 class="">Meals for <b>{{ kid_name }}</b> <button type="button" class="btn btn-dark"
+                    data-bs-toggle="modal" data-bs-target="#edit-kid">
+                    Edit
+                </button></h2>
+        </div>
+        <div class="col-xs-12 col-md-6 text-end mt-1">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#add-new-meal">
+                Add New Meal
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
     <div class="row">
         {% if meal_info %}
         {% for meal in meal_info %}
         <div class="card col-xs-12 col-md-4 ">
-            <img src="{{ meal.image_url }}" class="card-img-top" alt="...">
+            <div class="img-thumbnail mt-3">
+                <img src="{{ meal.image_url }}" class="card-img-top" alt="...">
+            </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li> created_on : <p class="card-text">{{ meal.created_on }}</p>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Created on</div>
+                        <div class="card-text">{{ meal.created_on }}</div>
                     </li>
-                    <li>updated_on : <p class="card-text">{{ meal.updated_on }}</p>
+                    <li class="d-flex justify-content-between">
+
+                        <div class="fw-bold">Updated on</div>
+                        <div class="card-text">{{ meal.updated_on }}</div>
                     </li>
-                    <li> approved_by :<p class="card-text">{{ meal.approved_by }}</p>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Approved by</div>
+                        <div class="card-text">{{ meal.approved_by }}</div>
                     </li>
-                    <li>is_approved :<p class="card-text">{{ meal.is_approved }}</p>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Is approved</div>
+                        <div class="card-text">{{ meal.is_approved|yesno:"✅,❌" }}</div>
                     </li>
-                    <li>image_url :<p class="card-text"><a href="{{ meal.image_url }}" target="blank">img_url</a> </p>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Image url</div>
+                        <div class="card-text"><a href="{{ meal.image_url }}" target="blank">Link</a> </div>
                     </li>
-                    <li>food_group :<p class="card-text">{{ meal.food_group }}</p>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Food group</div>
+                        <div class="card-text">{{ meal.food_group }}</div>
                     </li>
                 </ul>
             </div>
+            <div class="card-body text-end">
+                <a class="btn btn-dark button btn-sm" href="#">Edit Details</a>
+            </div>
         </div>
         {% endfor %}
+        {% else %}
+        <div>No meals found</div>
         {% endif %}
     </div>
 </div>
@@ -95,49 +130,51 @@
                         </div>
                     </div>
                     <fieldset class="row mb-3">
-                        <legend class="col-form-label col-sm-2 pt-0">Group</legend>
+                        <legend class="col-form-label col-sm-2 pt-0">Food Group</legend>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="group" id="group1" value="Veg"
+                                <input class="form-check-input" type="radio" name="food_group" id="Veg" value="Veg"
                                     checked>
-                                <label class="form-check-label" for="group1">
+                                <label class="form-check-label" for="Veg">
                                     Veg
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="group" id="group2" value="Fruit">
-                                <label class="form-check-label" for="group2">
+                                <input class="form-check-input" type="radio" name="food_group" id="Fruit" value="Fruit">
+                                <label class="form-check-label" for="Fruit">
                                     Fruit
                                 </label>
                             </div>
                             <div class="form-check disabled">
-                                <input class="form-check-input" type="radio" name="group" id="group3" value="Grain">
-                                <label class="form-check-label" for="group3">
+                                <input class="form-check-input" type="radio" name="food_group" id="Grain" value="Grain">
+                                <label class="form-check-label" for="Grain">
                                     Grain
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="group" id="group2" value="Protien">
-                                <label class="form-check-label" for="group2">
+                                <input class="form-check-input" type="radio" name="food_group" id="Protein"
+                                    value="Protein">
+                                <label class="form-check-label" for="Protein">
                                     Protien
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="group" id="group2" value="Dairy">
-                                <label class="form-check-label" for="group2">
+                                <input class="form-check-input" type="radio" name="food_group" id="Dairy" value="Dairy">
+                                <label class="form-check-label" for="Dairy">
                                     Dairy
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="group" id="group2"
+                                <input class="form-check-input" type="radio" name="food_group" id="Confectionery"
                                     value="Confectionery">
-                                <label class="form-check-label" for="group2">
+                                <label class="form-check-label" for="Confectionery">
                                     Confectionery
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="group" id="group2" value="Unknown">
-                                <label class="form-check-label" for="group2">
+                                <input class="form-check-input" type="radio" name="food_group" id="Unknown"
+                                    value="Unknown">
+                                <label class="form-check-label" for="Unknown">
                                     Unknown
                                 </label>
                             </div>
@@ -145,8 +182,8 @@
                     </fieldset>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn button btn-primary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn button btn-primary">Save</button>
+                        <button type="button" class="btn button btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn button btn-dark">Save</button>
                     </div>
                 </form>
             </div>
@@ -190,8 +227,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn button btn-primary">save changes</button>
-                        <button type="button" class="btn btn-primary button" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn button btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn button btn-dark">Save</button>
                     </div>
             </div>
             </form>
@@ -207,9 +244,15 @@
 <div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
                 {{message}}
             </div>
+            {% else %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -224,3 +267,11 @@
 </script>
 {% endif %}
 {% endblock %}
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->

@@ -22,25 +22,21 @@ def home(request):
 
 @login_required
 def add_child(request):
-    if request.method == 'GET':
-
-        return render(request, 'pages/add_child.html', {'kid_name': '', 'kid_age': '', 'parent_email': '', 'parent_phone': ''})
-    elif request.method == "POST":
-        user_id = request.user.id
-        kid_name = request.POST['kid_name']
-        kid_age = request.POST['kid_age']
-        parent_phone = request.POST['parent_phone']
-        parent_email = request.POST['parent_email']
-        if user_id and kid_name and kid_age and parent_phone and parent_email:
-            print(user_id, kid_name, kid_age, parent_phone, parent_email)
-            child_info = child(user_id=request.user, name=kid_name, age=kid_age,
-                               parent_contact_number=parent_phone, parent_email=parent_email)
-            child_info.save()
-            messages.success(request, 'Child added successfully')
-            return redirect('home')
-        else:
-            messages.error(request, 'Please fill all the fields')
-            return render(request, 'pages/add_child.html', {'kid_name': kid_name, 'kid_age': kid_age, 'parent_phone': parent_phone, 'parent_email': parent_email})
+    user_id = request.user.id
+    kid_name = request.POST['kid_name']
+    kid_age = request.POST['kid_age']
+    parent_phone = request.POST['parent_phone']
+    parent_email = request.POST['parent_email']
+    if user_id and kid_name and kid_age and parent_phone and parent_email:
+        print(user_id, kid_name, kid_age, parent_phone, parent_email)
+        child_info = child(user_id=request.user, name=kid_name, age=kid_age,
+                           parent_contact_number=parent_phone, parent_email=parent_email)
+        child_info.save()
+        messages.success(request, 'Child added successfully')
+        return redirect('home')
+    else:
+        messages.error(request, 'Please fill all the fields')
+        return redirect('home')
 
 
 @login_required
@@ -49,21 +45,18 @@ def kid_info(request, id):
         kid_info = child.objects.get(id=id)
         meal_info = kid_meal.objects.filter(kid_id=id)
 
-        return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number, 'meal_info': meal_info})
+        return render(request, 'pages/kid_info.html', {'kid_id': id, 'kid_name': kid_info.name, 'kid_age': kid_info.age, 'parent_email': kid_info.parent_email, 'parent_phone': kid_info.parent_contact_number, 'meal_info': meal_info, 'current_user_name': request.user.first_name+' '+request.user.last_name})
 
 
 @login_required
 def add_meal(request, id):
     kid = child.objects.get(id=id)
     img_url = request.POST['img_url']
-    group = request.POST['group']
+    food_group = request.POST['food_group']
 
-    if img_url and group:
-        if group == 'Unknown':
-            is_approved = True
-        else:
-            is_approved = False
-        meal_info = kid_meal(kid_id=kid, image_url=img_url, food_group=group,
+    if img_url and food_group:
+        is_approved = food_group != 'Unknown'
+        meal_info = kid_meal(kid_id=kid, image_url=img_url, food_group=food_group,
                              approved_by=request.user, is_approved=is_approved)
         meal_info.save()
         messages.success(request, 'Meal added successfully')
@@ -108,7 +101,7 @@ def signup(request):
               confirm_password, first_name, last_name)
         if user_password == confirm_password:
             if User.objects.filter(username=user_name).exists():
-                messages.info(request, 'Username already taken')
+                messages.error(request, 'Username already taken')
                 return render(request, 'pages/signup.html', {
                     'user_name': user_name,
                     'user_email': user_email,
@@ -116,7 +109,7 @@ def signup(request):
                     'last_name': last_name,
                 })
             elif User.objects.filter(email=user_email).exists():
-                messages.info(request, 'Email already taken')
+                messages.error(request, 'Email already taken')
                 return render(request, 'pages/signup.html', {
                     'user_name': user_name,
                     'user_email': user_email,
@@ -127,10 +120,10 @@ def signup(request):
                 user = User.objects.create_user(
                     username=user_name, password=user_password, email=user_email, first_name=first_name, last_name=last_name)
                 user.save()
-                messages.info(request, 'User created')
+                messages.error(request, 'User created')
                 return redirect('login')
         else:
-            messages.info(request, 'Password not matching')
+            messages.error(request, 'Password not matching')
             return render(request, 'pages/signup.html', {
                 'user_name': user_name,
                 'user_email': user_email,
@@ -138,12 +131,6 @@ def signup(request):
                 'last_name': last_name,
             })
     else:
-        user_info = {
-            'user_name': '',
-            'user_email': '',
-            'first_name': '',
-            'last_name': '',
-        }
         return render(request, 'pages/signup.html', {
             'user_name': '',
             'user_email': '',

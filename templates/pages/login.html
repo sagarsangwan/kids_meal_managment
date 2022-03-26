@@ -42,9 +42,15 @@
 <div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
                 {{message}}
             </div>
+            {% else %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

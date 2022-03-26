@@ -8,8 +8,10 @@
                     <h2 class="text-white mb-0">Records Manager</h1>
                 </a>
             </div>
-            <div class="col-6 text-end">
-                <a class="btn btn-primary" href="/logoutuser">Logout</a>
+            <div class="col-6 text-end mt-1">
+                <div class="text-secondary">Welcome <b class="text-white">{{ current_user_name }}</b> <a
+                        class="btn btn-secondary ms-4 btn-sm" href="/logoutuser">Logout</a>
+                </div>
             </div>
         </div>
     </div>
@@ -17,7 +19,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mt-4">
-            <h2 class="">Add Student</h1>
+            <h2 class="">Add Kid</h1>
         </div>
     </div>
 </div>
@@ -26,27 +28,28 @@
         {% csrf_token %}
         <div class="form-row container-style mg-top">
             <div class="form-group col-xs-12 col-md-6 pb-3">
-                <label for="inputEmail4">Kid name</label>
+                <label for="inputEmail4">Name</label>
                 <input type="text" class="form-control" name="kid_name" required value="{{kid_name}}" id="inputEmail4"
-                    placeholder="kid name">
+                    placeholder="Name">
             </div>
             <div class="form-group col-xs-12 col-md-6 pb-3">
-                <label for="inputEmail4">Kid age</label>
+                <label for="inputEmail4">Age</label>
                 <input type="text" class="form-control" name="kid_age" required value="{{kid_age}}" id="inputEmail4"
-                    placeholder="Kid age">
+                    placeholder="Age">
             </div>
             <div class="form-group col-xs-12 col-md-6 pb-3">
-                <label for="inputEmail4">Parent contact number</label>
+                <label for="inputEmail4">Parent Phone</label>
                 <input type="text" class="form-control" required name="parent_phone" value="{{parent_phone}}"
                     id="inputEmail4" placeholder="Parent conact number">
             </div>
             <div class="form-group col-xs-12 col-md-6 pb-3">
-                <label for="inputPassword4">Parent email</label>
+                <label for="inputPassword4">Parent Email</label>
                 <input type="email" class="form-control" required name="parent_email" id="inputPassword4"
                     placeholder="Parent email">
             </div>
 
-            <div class="form-group col-xs-12 col-md-6 pb-3">
+            <div class="form-group col-xs-12 col-md-6 pb-3 text-end">
+                <a href="/" class="btn button btn-secondary">Cancel</a>
                 <button type="submit" class="btn button btn-dark">Add child</button>
             </div>
         </div>
@@ -64,9 +67,15 @@
 <div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
                 {{message}}
             </div>
+            {% else %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
