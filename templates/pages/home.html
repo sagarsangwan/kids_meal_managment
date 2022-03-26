@@ -101,32 +101,31 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Kid</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" action="/add-child/">
+            <form method="post" action="/add-kid/">
                 <div class="modal-body">
                     {% csrf_token %}
                     <div class="form-row container-style mg-top">
                         <div class="form-group col-12 pb-3">
                             <label for="inputEmail4">Name</label>
                             <input type="text" class="form-control" name="kid_name" required value="{{kid_name}}"
-                                id="inputEmail4" placeholder="Name">
+                                id="inputEmail4">
                         </div>
                         <div class="form-group col-12 pb-3">
                             <label for="inputEmail4">Age</label>
                             <input type="text" class="form-control" name="kid_age" required value="{{kid_age}}"
-                                id="inputEmail4" placeholder="Age">
+                                id="inputEmail4">
                         </div>
                         <div class="form-group col-12 pb-3">
                             <label for="inputEmail4">Parent Phone</label>
                             <input type="text" class="form-control" required name="parent_phone"
-                                value="{{parent_phone}}" id="inputEmail4" placeholder="Parent conact number">
+                                value="{{parent_phone}}" id="inputEmail4">
                         </div>
                         <div class="form-group col-12 pb-3">
                             <label for="inputPassword4">Parent Email</label>
-                            <input type="email" class="form-control" required name="parent_email" id="inputPassword4"
-                                placeholder="Parent email">
+                            <input type="email" class="form-control" required name="parent_email" id="inputPassword4">
                         </div>
 
 

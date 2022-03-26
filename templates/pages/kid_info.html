@@ -87,7 +87,8 @@
                 </ul>
             </div>
             <div class="card-body text-end">
-                <a class="btn btn-dark button btn-sm" href="#">Edit Details</a>
+                <a class="btn btn-dark" href="edit-meal-info/{{ meal.id }}">
+                    Edit Details</a>
             </div>
         </div>
         {% endfor %}
@@ -117,7 +118,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new meal</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Meal</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -208,22 +209,22 @@
                         <div class="form-group col-12 pb-3">
                             <label for="inputEmail4">Kid name</label>
                             <input type="text" class="form-control" name="kid_name" required value="{{kid_name}}"
-                                id="inputEmail4" placeholder="kid name">
+                                id="inputEmail4">
                         </div>
                         <div class="form-group col-12 pb-3">
                             <label for="inputEmail4">Kid age</label>
                             <input type="text" class="form-control" name="kid_age" required value="{{kid_age}}"
-                                id="inputEmail4" placeholder="Kid age">
+                                id="inputEmail4">
                         </div>
                         <div class="form-group col-12    pb-3">
                             <label for="inputEmail4">Parent contact number</label>
                             <input type="text" class="form-control" required name="parent_phone"
-                                value="{{parent_phone}}" id="inputEmail4" placeholder="Parent conact number">
+                                value="{{parent_phone}}" id="inputEmail4">
                         </div>
                         <div class="form-group col-12    pb-3">
                             <label for="inputPassword4">Parent email</label>
                             <input type="email" class="form-control" required value="{{ parent_email }}"
-                                name="parent_email" id="inputPassword4" placeholder="Parent email">
+                                name="parent_email" id="inputPassword4">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -235,8 +236,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 {% if messages %}
