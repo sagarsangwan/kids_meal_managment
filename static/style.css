@@ -18,14 +18,14 @@ body{
 
 }
 
-a{
+a,.btn-link{
     text-decoration: none;
-    color: #070707;
+    color: rgb(5, 92, 173);
 }
 
-a:hover {
+
+a:hover, .btn-link:hover {
     color: rgb(189, 0, 38);
-    border-bottom: dashed 1px rgb(189, 0, 38);
 }
 
 .border-radius-1{
@@ -40,7 +40,7 @@ a:hover {
     font-size: 20px;
 }
 .button{
-    border-radius: 12px;
+    border-radius: 5px;
     border: none;
     padding: 8px 16px
 }

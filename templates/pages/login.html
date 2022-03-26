@@ -20,20 +20,18 @@
         </div>
         <div class="col-12 pb-3">
             User Name :
-            <input type="text" name="username" class="form-control" aria-describedby="emailHelp">
+            <input type="text" name="username" class="form-control" aria-describedby="emailHelp" required>
         </div>
         <div class="col-12 pb-3">
             Password :
-            <input type="password" name="password" class="form-control">
+            <input type="password" name="password" class="form-control" required>
         </div>
         <div class="col-12 pb-3">
             <button type="submit" class="btn btn-dark">Login</button>
             <span class="px-2">or</span>
             <a href="/signup" class="btn btn-dark">Signup</a>
         </div>
-        <div class="col-12">
-            <i>{{info}}</i>
-        </div>
+
     </form>
 </div>
 
@@ -42,9 +40,15 @@
 <div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
                 {{message}}
             </div>
+            {% else %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

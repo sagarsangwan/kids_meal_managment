@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
-<div class="container">
+<div class="container top-margin border-radius-1 bg-grey mx-auto p-5" style="width: 600px;">
     <div class="row">
         <div class="col-12 mt-4">
             <h2 class="">SignUp</h1>
@@ -8,38 +8,37 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-row container-style mg-top">
-                <div class="form-group col-xs-12 col-md-6 pb-3">
-                    <label for="inputEmail4">username</label>
+                <div class="form-group col pb-3">
+                    <label for="inputEmail4">Username</label>
                     <input type="text" name="user_name" value="{{user_name}}" required class="form-control"
-                        id="inputName4" placeholder="Name">
+                        id="inputName4">
                 </div>
-                <div class="form-group col-xs-12 col-md-6 pb-3">
-                    <label for="inputEmail4">Firstname</label>
+                <div class="form-group col pb-3">
+                    <label for="inputEmail4">First Name</label>
                     <input type="text" class="form-control" name="first_name" required value="{{first_name}}"
-                        id="inputEmail4" placeholder="First name">
+                        id="inputEmail4" name">
                 </div>
-                <div class="form-group col-xs-12 col-md-6 pb-3">
-                    <label for="inputEmail4">Last name</label>
+                <div class="form-group col pb-3">
+                    <label for="inputEmail4">Last Name</label>
                     <input type="text" class="form-control" name="last_name" required value="{{last_name}}"
-                        id="inputEmail4" placeholder="Last name">
+                        id="inputEmail4" name">
                 </div>
-                <div class="form-group col-xs-12 col-md-6 pb-3">
+                <div class="form-group col pb-3">
                     <label for="inputEmail4">Email</label>
                     <input type="email" class="form-control" required name="user_email" value="{{user_email}}"
-                        id="inputEmail4" placeholder="Email">
+                        id="inputEmail4">
                 </div>
-                <div class="form-group col-xs-12 col-md-6 pb-3">
+                <div class="form-group col pb-3">
                     <label for="inputPassword4">Password</label>
-                    <input type="password" class="form-control" required name="user_password" id="inputPassword4"
-                        placeholder="Password">
+                    <input type="password" class="form-control" required name="user_password" id="inputPassword4">
                 </div>
-                <div class="form-group col-xs-12 col-md-6 pb-3">
-                    <label for="inputPassword4">confirm Password</label>
-                    <input type="password" class="form-control" required id="inputPassword4" name="confirm_password"
-                        placeholder="Re-type Password">
+                <div class="form-group col pb-3">
+                    <label for="inputPassword4">Confirm Password</label>
+                    <input type="password" class="form-control" required id="inputPassword4" name="confirm_password">
                 </div>
-                <div class="form-group col-xs-12 col-md-6 pb-3">
-                    <button type="submit" class="btn button btn-dark">Sign in</button>
+                <div class="form-group col pb-3">
+                    <button type="submit" class="btn button btn-dark">Sign Up</button>
+                    <a href="/loginuser" class="btn btn-link">Already have an account?</a>
                 </div>
             </div>
         </form>
@@ -52,9 +51,15 @@
     <div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="alert alert-{% 'danger' if message.tags == 'error' else 'success' }}">
+                {% if message.tags == 'error' %}
+                <div class="alert alert-danger">
                     {{message}}
                 </div>
+                {% else %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

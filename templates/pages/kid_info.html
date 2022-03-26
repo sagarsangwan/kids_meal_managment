@@ -1,0 +1,277 @@
+{% extends "main.html" %}
+{% block content %}
+<style>
+    .card-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .header-button {
+            margin-bottom: 12px;
+        }
+
+        .header-button {
+            margin-bottom: 12px;
+        }
+    }
+</style>
+
+<div class="bg-dark">
+    <div class="container">
+        <div class="row py-2">
+            <div class="col-6">
+                <a href="/">
+                    <h2 class="text-white mb-0">Records Manager</h1>
+                </a>
+            </div>
+            <div class="col-6 text-end mt-1">
+                <div class="text-secondary">Welcome <b class="text-white">{{ current_user_name }}</b> <a
+                        class="btn btn-secondary ms-4 btn-sm" href="/logoutuser">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <h2 class="">Meals for <b>{{ kid_name }}</b> <button type="button" class="btn btn-dark"
+                    data-bs-toggle="modal" data-bs-target="#edit-kid">
+                    Edit
+                </button></h2>
+        </div>
+        <div class="col-xs-12 col-md-6 text-end mt-1">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#add-new-meal">
+                Add New Meal
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row">
+        {% if meal_info %}
+        {% for meal in meal_info %}
+        <div class="card col-xs-12 col-md-4 ">
+            <div class="img-thumbnail mt-3" style="background-image: url(/static/images/placeholder.png);
+                height: 300px;
+                background-position: center;
+                background-size: contain;
+                background-repeat: none;
+                ">
+                <img src="{{ meal.image_url }}" class="card-img-top" alt="..." style="height: 300px;">
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Created on</div>
+                        <div class="card-text">{{ meal.created_on }}</div>
+                    </li>
+                    <li class="d-flex justify-content-between">
+
+                        <div class="fw-bold">Updated on</div>
+                        <div class="card-text">{{ meal.updated_on }}</div>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Approved by</div>
+                        <div class="card-text">{{ meal.approved_by }}</div>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Is approved</div>
+                        <div class="card-text">{{ meal.is_approved|yesno:"✅,❌" }}</div>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Image url</div>
+                        <div class="card-text"><a href="{{ meal.image_url }}" target="blank">Link</a> </div>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <div class="fw-bold">Food group</div>
+                        <div class="card-text">{{ meal.food_group }}</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body text-end">
+                <a class="btn btn-dark" href="/edit-meal-info/{{ meal.id }}">
+                    Edit Details</a>
+                <a class="btn btn-dark" href="/delete-meal/{{ meal.id }}">
+                    Delete Meal</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>No meals found</div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal for adding new meal-->
+<div class="modal fade" id="add-new-meal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Meal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/add-meal/{{ kid_id }}" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Image Url</label>
+                        <div class="col-sm-10">
+                            <input type="text" required class="form-control" name="img_url" id="inputPassword3">
+                        </div>
+                    </div>
+                    <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-2 pt-0">Food Group</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="food_group" id="Veg" value="Veg"
+                                    checked>
+                                <label class="form-check-label" for="Veg">
+                                    Veg
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="food_group" id="Fruit" value="Fruit">
+                                <label class="form-check-label" for="Fruit">
+                                    Fruit
+                                </label>
+                            </div>
+                            <div class="form-check disabled">
+                                <input class="form-check-input" type="radio" name="food_group" id="Grain" value="Grain">
+                                <label class="form-check-label" for="Grain">
+                                    Grain
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="food_group" id="Protein"
+                                    value="Protein">
+                                <label class="form-check-label" for="Protein">
+                                    Protien
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="food_group" id="Dairy" value="Dairy">
+                                <label class="form-check-label" for="Dairy">
+                                    Dairy
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="food_group" id="Confectionery"
+                                    value="Confectionery">
+                                <label class="form-check-label" for="Confectionery">
+                                    Confectionery
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="food_group" id="Unknown"
+                                    value="Unknown">
+                                <label class="form-check-label" for="Unknown">
+                                    Unknown
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn button btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn button btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal for edit kid info -->
+<div class="modal fade" id="edit-kid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Kid Info</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/edit-kid-info/{{ kid_id }}" method="post">
+                    {% csrf_token %}
+                    <div class="form-row container-style mg-top">
+                        <div class="form-group col-12 pb-3">
+                            <label for="inputEmail4">Kid name</label>
+                            <input type="text" class="form-control" name="kid_name" required value="{{kid_name}}"
+                                id="inputEmail4">
+                        </div>
+                        <div class="form-group col-12 pb-3">
+                            <label for="inputEmail4">Kid age</label>
+                            <input type="text" class="form-control" name="kid_age" required value="{{kid_age}}"
+                                id="inputEmail4">
+                        </div>
+                        <div class="form-group col-12    pb-3">
+                            <label for="inputEmail4">Parent contact number</label>
+                            <input type="text" class="form-control" required name="parent_phone"
+                                value="{{parent_phone}}" id="inputEmail4">
+                        </div>
+                        <div class="form-group col-12    pb-3">
+                            <label for="inputPassword4">Parent email</label>
+                            <input type="email" class="form-control" required value="{{ parent_email }}"
+                                name="parent_email" id="inputPassword4">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn button btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn button btn-dark">Save</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="modal show" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+                {{message}}
+            </div>
+            {% else %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('errorModal'))
+        myModal.show()
+    }, false);
+</script>
+{% endif %}
+{% endblock %}
+
+
