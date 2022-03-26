@@ -1,3 +1,5 @@
+from datetime import timezone
+import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -28,7 +30,6 @@ def add_child(request):
     parent_phone = request.POST['parent_phone']
     parent_email = request.POST['parent_email']
     if user_id and kid_name and kid_age and parent_phone and parent_email:
-        print(user_id, kid_name, kid_age, parent_phone, parent_email)
         child_info = child(user_id=request.user, name=kid_name, age=kid_age,
                            parent_contact_number=parent_phone, parent_email=parent_email)
         child_info.save()
@@ -41,9 +42,24 @@ def add_child(request):
 
 @login_required
 def edit_meal_info(request, id):
+    meal_info = kid_meal.objects.get(id=id)
     if request.method == 'GET':
-        meal_info = kid_meal.objects.get(id=id)
         return render(request, 'pages/edit_meal_info.html', {'meal_info': meal_info})
+    if request.method == 'POST':
+        kid = meal_info.kid_id.id
+
+        img_url = request.POST['img_url']
+        food_group = request.POST['food_group']
+
+        if img_url and food_group:
+            is_approved = food_group != 'Unknown'
+            kid_meal.objects.filter(id=id).update(
+                image_url=img_url, food_group=food_group, updated_on=datetime.datetime.now(), is_approved=is_approved)
+            messages.success(request, 'Meal info updated successfully')
+            return redirect('kid_info', id=kid)
+        else:
+            messages.error(request, 'Please fill all the fields')
+            return redirect('edit_meal_info', id=id)
 
 
 @login_required
@@ -71,6 +87,17 @@ def add_meal(request, id):
     else:
         messages.error(request, 'Please fill all the fields')
         return redirect('kid_info', id=id)
+
+
+@login_required
+def delete_meal(request, id):
+    if request.method == 'GET':
+        kid_id = kid_meal.objects.get(id=id).kid_id.id
+
+        kid_meal.objects.get(id=id).delete()
+
+        messages.success(request, 'Meal deleted successfully')
+        return redirect('kid_info', id=kid_id)
 
 
 @login_required

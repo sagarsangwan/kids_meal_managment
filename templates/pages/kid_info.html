@@ -54,8 +54,13 @@
         {% if meal_info %}
         {% for meal in meal_info %}
         <div class="card col-xs-12 col-md-4 ">
-            <div class="img-thumbnail mt-3">
-                <img src="{{ meal.image_url }}" class="card-img-top" alt="...">
+            <div class="img-thumbnail mt-3" style="background-image: url(/static/images/placeholder.png);
+                height: 300px;
+                background-position: center;
+                background-size: contain;
+                background-repeat: none;
+                ">
+                <img src="{{ meal.image_url }}" class="card-img-top" alt="..." style="height: 300px;">
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
@@ -89,6 +94,8 @@
             <div class="card-body text-end">
                 <a class="btn btn-dark" href="/edit-meal-info/{{ meal.id }}">
                     Edit Details</a>
+                <a class="btn btn-dark" href="/delete-meal/{{ meal.id }}">
+                    Delete Meal</a>
             </div>
         </div>
         {% endfor %}
