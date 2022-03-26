@@ -174,7 +174,7 @@ def signup(request):
                 user = User.objects.create_user(
                     username=user_name, password=user_password, email=user_email, first_name=first_name, last_name=last_name)
                 user.save()
-                messages.error(request, 'User created')
+                messages.info(request, 'User created')
                 return redirect('login')
         else:
             messages.error(request, 'Password not matching')
