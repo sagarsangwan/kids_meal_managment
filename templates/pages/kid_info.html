@@ -226,12 +226,14 @@
                         <div class="form-group col-12    pb-3">
                             <label for="inputEmail4">Parent contact number</label>
                             <input type="text" class="form-control" required name="parent_phone"
-                                value="{{parent_phone}}" id="inputEmail4">
+                                value="{{parent_phone}}" id="inputEmail4" pattern="[0-9]{10}" title="Phone enter a valid phone number">
                         </div>
                         <div class="form-group col-12    pb-3">
                             <label for="inputPassword4">Parent email</label>
                             <input type="email" class="form-control" required value="{{ parent_email }}"
                                 name="parent_email" id="inputPassword4">
+                                <div class="text-secondary ts-sm">* This email would be used for communication.</div>
+
                         </div>
                     </div>
                     <div class="modal-footer">

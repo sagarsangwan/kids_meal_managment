@@ -33,13 +33,18 @@ def add_kid(request):
     parent_email = request.POST['parent_email']
     # checking if user entered all the fields or not
     if user_id and kid_name and kid_age and parent_phone and parent_email:
-        child_info = child(user_id=request.user, name=kid_name, age=kid_age,
-                           parent_contact_number=parent_phone, parent_email=parent_email)
-        # saving the data to the database
-        child_info.save()
-        # displaying success message to the user and redirecting to home page
-        messages.success(request, 'Child added successfully')
-        return redirect('home')
+        if len(parent_phone) != 10:
+            messages.error(request, 'Invalid phone number')
+            return redirect('home')
+        else:
+
+            child_info = child(user_id=request.user, name=kid_name, age=kid_age,
+                               parent_contact_number=parent_phone, parent_email=parent_email)
+            # saving the data to the database
+            child_info.save()
+            # displaying success message to the user and redirecting to home page
+            messages.success(request, 'Child added successfully')
+            return redirect('home')
     else:
         messages.error(request, 'Please fill all the fields')
         return redirect('home')
