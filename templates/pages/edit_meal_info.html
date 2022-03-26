@@ -1,9 +1,143 @@
 {% extends "main.html" %}
 {% block content %}
 
+<div class="bg-dark">
+    <div class="container">
+        <div class="row py-2">
+            <div class="col-6">
+                <a href="/">
+                    <h2 class="text-white mb-0">Records Manager</h1>
+                </a>
+            </div>
+            <div class="col-6 text-end mt-1">
+                <div class="text-secondary">Welcome <b class="text-white">{{ current_user_name }}</b> <a
+                        class="btn btn-secondary ms-4 btn-sm" href="/logoutuser">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h1>hiii</h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <h2 class="">Edit Meal</h2>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Image Url</label>
+                    <div class="col-sm-10">
+                        <input type="text" required class="form-control" name="img_url" id="inputPassword3"
+                            value="{{meal_info.image_url}}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Preview</label>
+                    <div class="col-sm-10">
+                        <img id="preview-image" src="{{meal_info.image_url}}" />
+                    </div>
+                </div>
+                <fieldset class="row mb-3">
+                    <legend class="col-form-label col-sm-2 pt-0">Food Group</legend>
+                    <div class="col-sm-10 d-flex">
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" name="food_group" id="Veg" 
+                            {% if meal_info.food_group == "Veg" %}
+                            checked
+                            {% endif %}
+                             value="Veg">
+                            <label class="form-check-label" for="Veg">
+                                Veg
+                            </label>
+                        </div>
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" name="food_group" 
+                            {% if meal_info.food_group == "Fruit" %}
+                            checked
+                            {% endif %}
+                             id="Fruit" value="Fruit">
+                            <label class="form-check-label" for="Fruit">
+                                Fruit
+                            </label>
+                        </div>
+                        <div class="form-check me-4 disabled">
+                            <input class="form-check-input" type="radio" name="food_group" 
+                            {% if meal_info.food_group == "Grain" %}
+                            checked
+                            {% endif %}
+                             id="Grain" value="Grain">
+                            <label class="form-check-label" for="Grain">
+                                Grain
+                            </label>
+                        </div>
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" name="food_group" id="Protein" 
+                            {% if meal_info.food_group == "Protein" %}
+                            checked
+                            {% endif %}
+                             value="Protein">
+                            <label class="form-check-label" for="Protein">
+                                Protien
+                            </label>
+                        </div>
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" name="food_group" 
+                            {% if meal_info.food_group == "Dairy" %}
+                            checked
+                            {% endif %}
+                             id="Dairy" value="Dairy">
+                            <label class="form-check-label" for="Dairy">
+                                Dairy
+                            </label>
+                        </div>
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" name="food_group" 
+                            {% if meal_info.food_group == "Confectionery" %}
+                            checked
+                            {% endif %}
+                             id="Confectionery"
+                                value="Confectionery">
+                            <label class="form-check-label" for="Confectionery">
+                                Confectionery
+                            </label>
+                        </div>
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" name="food_group" 
+                            {% if meal_info.food_group == "Unknown" %}
+                            checked
+                            {% endif %}
+                             id="Unknown" value="Unknown">
+                            <label class="form-check-label" for="Unknown">
+                                Unknown
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
 
+                <div class="text-end">
+                    <a href="/" class="btn button btn-secondary">Cancel</a>
+                    <button type="submit" class="btn button btn-primary">Save</button>
+                </div>
+            </form>
 
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var preview = $('#preview-image');
+        var imageUrlInput = $("#inputPassword3");
+
+        imageUrlInput.on('input', function () {
+            preview.attr("src", "");
+            preview.attr("src", this.value);
+        });
+    }, false);
+</script>
 
 {% endblock %}
