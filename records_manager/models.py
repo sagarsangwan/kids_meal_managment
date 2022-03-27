@@ -19,7 +19,7 @@ class child(models.Model):
 #  model for meal table in the database to store the information of the meal of the current kid
 class kid_meal(models.Model):
     kid_id = models.ForeignKey('child', on_delete=models.CASCADE)
-    image_url = models.CharField(max_length=200)
+    image_url = models.CharField(max_length=500)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now_add=True)
     is_approved = models.BooleanField(default=False)
