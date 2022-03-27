@@ -100,6 +100,7 @@ def kid_info(request, id):
 
 @login_required
 def add_meal(request, id):
+    meal_info = kid_meal.objects.get(id=id)
     kid = child.objects.get(id=id)
     img_url = request.POST['img_url']
     food_group = request.POST['food_group']
