@@ -62,15 +62,6 @@ def edit_meal_info(request, id):
 
         img_url = request.POST['img_url']
         food_group = request.POST['food_group']
-        # sending mail to the parent of the kid if food group is unknwon
-        if food_group == 'Unknown':
-            send_mail(
-                'meal not approved',
-                'Hi, \n\nYour meal is not approved by the admin because food group is unknown.\nplease check meal at - '+img_url,
-                settings.DEFAULT_FROM_EMAIL,
-                [meal_info.kid_id.parent_email],
-                fail_silently=False,
-            )
 
         if img_url and food_group:
             # checking if food group is defined or not
@@ -79,6 +70,20 @@ def edit_meal_info(request, id):
             kid_meal.objects.filter(id=id).update(
                 image_url=img_url, food_group=food_group, updated_on=datetime.datetime.now(), is_approved=is_approved)
             messages.success(request, 'Meal info updated successfully')
+
+            if food_group == 'Unknown':
+                try:
+                    # sending mail to the parent of the kid if food group is unknwon
+                    send_mail(
+                        'meal not approved',
+                        'Hi,\n\nYour meal is not approved by the admin because food group is unknown.\nPlease check meal at - '+img_url,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [meal_info.kid_id.parent_email],
+                        fail_silently=False,
+                    )
+                except:
+                    messages.error(request, 'Mail not sent')
+
             return redirect('kid_info', id=kid)
         else:
             messages.error(request, 'Please fill all the fields')
@@ -102,17 +107,9 @@ def kid_info(request, id):
 def add_meal(request, id):
     meal_info = kid_meal.objects.get(id=id)
     kid = child.objects.get(id=id)
+
     img_url = request.POST['img_url']
     food_group = request.POST['food_group']
-    if food_group == 'Unknown':
-        # sending mail to the parent of the kid if food group is unknwon
-        send_mail(
-            'meal not approved',
-            'Hi,\n\nYour meal is not approved by the admin because food group is unknown.\nPlease check meal at - '+img_url,
-            settings.DEFAULT_FROM_EMAIL,
-            [meal_info.kid_id.parent_email],
-            fail_silently=False,
-        )
 
     if img_url and food_group:
         is_approved = food_group != 'Unknown'
@@ -120,6 +117,20 @@ def add_meal(request, id):
                              approved_by=request.user, is_approved=is_approved)
         meal_info.save()
         messages.success(request, 'Meal added successfully')
+
+        if food_group == 'Unknown':
+            try:
+                # sending mail to the parent of the kid if food group is unknwon
+                send_mail(
+                    'meal not approved',
+                    'Hi,\n\nYour meal is not approved by the admin because food group is unknown.\nPlease check meal at - '+img_url,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [meal_info.kid_id.parent_email],
+                    fail_silently=False,
+                )
+            except:
+                messages.error(request, 'Mail not sent')
+
         return redirect('kid_info', id=id)
     else:
         messages.error(request, 'Please fill all the fields')
