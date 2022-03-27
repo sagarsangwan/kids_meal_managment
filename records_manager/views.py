@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 
 
 # home page for displaying all the records of current user
@@ -59,8 +60,20 @@ def edit_meal_info(request, id):
         return render(request, 'pages/edit_meal_info.html', {'meal_info': meal_info})
     if request.method == 'POST':
         kid = meal_info.kid_id.id
+        print(kid)
         img_url = request.POST['img_url']
         food_group = request.POST['food_group']
+        # sending mail to the parent of the kid if food group is unknwon
+        # if food_group == 'Unknown':
+        #     print('sending mail')
+        #     send_mail(
+        #         'meal not approved',
+        #         'hi, /n your meal is not approved by the admin because food group is unknown /n please check meal at',
+        #         '',
+        #         [meal_info.kid_id.parent_email],
+        #         fail_silently=False,
+        #     )
+        #     print('mail sent')
         if img_url and food_group:
             # checking if food group is defined or not
             is_approved = food_group != 'Unknown'
