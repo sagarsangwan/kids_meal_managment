@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.conf import settings
 
 
 # home page for displaying all the records of current user
@@ -15,8 +16,6 @@ def home(request):
     if request.method == 'GET':
         # getting all kid records of current user and displaying them on home page
         all_kid = child.objects.filter(user_id=request.user)
-        for kid in all_kid:
-            print(kid.parent_email)
         current_user = request.user
         return render(request, 'pages/home.html', {'all_kid': all_kid, 'current_user_name': current_user.first_name+' '+current_user.last_name})
 
@@ -60,20 +59,19 @@ def edit_meal_info(request, id):
         return render(request, 'pages/edit_meal_info.html', {'meal_info': meal_info})
     if request.method == 'POST':
         kid = meal_info.kid_id.id
-        print(kid)
+
         img_url = request.POST['img_url']
         food_group = request.POST['food_group']
         # sending mail to the parent of the kid if food group is unknwon
-        # if food_group == 'Unknown':
-        #     print('sending mail')
-        #     send_mail(
-        #         'meal not approved',
-        #         'hi, /n your meal is not approved by the admin because food group is unknown /n please check meal at',
-        #         '',
-        #         [meal_info.kid_id.parent_email],
-        #         fail_silently=False,
-        #     )
-        #     print('mail sent')
+        if food_group == 'Unknown':
+            send_mail(
+                'meal not approved',
+                'Hi, \n\nYour meal is not approved by the admin because food group is unknown.\nplease check meal at - '+img_url,
+                settings.DEFAULT_FROM_EMAIL,
+                [meal_info.kid_id.parent_email],
+                fail_silently=False,
+            )
+
         if img_url and food_group:
             # checking if food group is defined or not
             is_approved = food_group != 'Unknown'
@@ -105,6 +103,15 @@ def add_meal(request, id):
     kid = child.objects.get(id=id)
     img_url = request.POST['img_url']
     food_group = request.POST['food_group']
+    if food_group == 'Unknown':
+        # sending mail to the parent of the kid if food group is unknwon
+        send_mail(
+            'meal not approved',
+            'Hi,\n\nYour meal is not approved by the admin because food group is unknown.\nPlease check meal at - '+img_url,
+            settings.DEFAULT_FROM_EMAIL,
+            [meal_info.kid_id.parent_email],
+            fail_silently=False,
+        )
 
     if img_url and food_group:
         is_approved = food_group != 'Unknown'
@@ -160,7 +167,6 @@ def delete_kid(request, id):
 
 
 def signup(request):
-    print(request)
     if request.method == 'POST':
         user_name = request.POST['user_name']
         user_email = request.POST['user_email']
@@ -168,9 +174,6 @@ def signup(request):
         last_name = request.POST['last_name']
         user_password = request.POST['user_password']
         confirm_password = request.POST['confirm_password']
-
-        print(user_name, user_email, user_password,
-              confirm_password, first_name, last_name)
         if user_password == confirm_password:
             if User.objects.filter(username=user_name).exists():
                 messages.error(request, 'Username already taken')
